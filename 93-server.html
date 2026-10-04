@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>93 server — Minecraft сервер</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@600;800&family=Manrope:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  box-sizing:border-box;
+  --black:#000;
+  --navy:#07122e;
+  --navy2:#0c1d4a;
+  --blue:#2f6bff;
+  --sky:#8fb0ff;
+  --text:#e9efff;
+  --muted:#8b98b8;
+  padding-top:env(safe-area-inset-top,0px);
+  padding-bottom:env(safe-area-inset-bottom,0px);
+}
+*,*::before,*::after{box-sizing:inherit}
+html{scroll-behavior:smooth;scroll-padding-top:72px}
+body{margin:0;background:var(--black);color:var(--text);font-family:Manrope,system-ui,-apple-system,"Segoe UI",sans-serif;font-size:17px;line-height:1.6}
+a{color:inherit}
+:focus-visible{outline:3px solid var(--sky);outline-offset:3px;border-radius:6px}
+.wrap{max-width:960px;margin:0 auto;padding:0 24px}
+
+header{position:sticky;top:0;z-index:5;background:rgba(0,0,0,.85);backdrop-filter:blur(8px);border-bottom:1px solid var(--navy2)}
+header .wrap{display:flex;align-items:center;justify-content:space-between;height:60px}
+.logo{font-family:Unbounded,Manrope,sans-serif;font-weight:800;text-decoration:none;font-size:18px}
+.logo b{color:var(--blue)}
+nav{display:flex;gap:20px}
+nav a{text-decoration:none;color:var(--muted);font-weight:500;font-size:15px;padding:6px 0;transition:color .2s}
+nav a:hover{color:var(--text)}
+
+.hero{padding:96px 0 88px;background:
+  linear-gradient(var(--navy2) 1px,transparent 1px) 0 0/48px 48px,
+  linear-gradient(90deg,var(--navy2) 1px,transparent 1px) 0 0/48px 48px,var(--black);
+  background-blend-mode:normal;position:relative}
+.hero::after{content:"";position:absolute;inset:0;background:radial-gradient(ellipse at 30% 40%,transparent 0,var(--black) 85%);pointer-events:none}
+.hero .wrap{position:relative;z-index:1}
+.big{font-family:Unbounded,Manrope,sans-serif;font-weight:800;font-size:clamp(110px,26vw,260px);line-height:.9;margin:0;color:var(--blue);letter-spacing:-.04em;animation:rise .7s ease-out both}
+.big small{display:block;font-size:clamp(22px,5vw,44px);font-weight:600;color:var(--text);letter-spacing:0;margin-top:12px}
+.lead{max-width:34ch;font-size:20px;color:var(--sky);margin:28px 0 32px}
+.ip{display:flex;flex-wrap:wrap;gap:12px;align-items:stretch}
+.ip code{display:flex;align-items:center;padding:0 20px;min-height:56px;background:var(--navy);border:1px solid var(--navy2);border-radius:12px;font-family:ui-monospace,Menlo,Consolas,monospace;font-size:18px}
+button{font:inherit;font-weight:700;min-height:56px;padding:0 28px;border:0;border-radius:12px;background:var(--blue);color:#fff;cursor:pointer;transition:background .2s,transform .1s}
+button:hover{background:#4a7fff}
+button:active{transform:scale(.97)}
+.hint{color:var(--muted);font-size:14px;margin-top:14px}
+@keyframes rise{from{opacity:0;transform:translateY(24px)}to{opacity:1;transform:none}}
+
+section{padding:80px 0}
+section.alt{background:var(--navy)}
+h2{font-family:Unbounded,Manrope,sans-serif;font-weight:600;font-size:clamp(26px,5vw,36px);margin:0 0 32px;letter-spacing:-.01em}
+
+.steps{list-style:none;margin:0;padding:0;display:grid;gap:16px;counter-reset:s}
+.steps li{counter-increment:s;display:grid;grid-template-columns:48px 1fr;gap:16px;align-items:start;padding:20px;background:var(--black);border:1px solid var(--navy2);border-radius:14px}
+.steps li::before{content:counter(s);display:grid;place-items:center;width:48px;height:48px;border-radius:12px;background:var(--navy2);color:var(--sky);font-family:Unbounded,sans-serif;font-weight:600}
+.steps b{display:block;margin-bottom:2px}
+.steps span{color:var(--muted)}
+
+.grid{display:grid;gap:16px;grid-template-columns:repeat(auto-fit,minmax(240px,1fr))}
+.card{padding:24px;border:1px solid var(--navy2);border-radius:14px;background:var(--navy)}
+section.alt .card{background:var(--black)}
+.card h3{margin:0 0 6px;font-size:19px;color:var(--sky)}
+.card p{margin:0;color:var(--muted)}
+
+.rules{margin:0;padding:0;list-style:none;display:grid;gap:12px}
+.rules li{padding:16px 20px;border-left:3px solid var(--blue);background:var(--black);border-radius:0 10px 10px 0}
+.rules b{color:var(--sky)}
+
+.join{text-align:center}
+.join p{color:var(--muted);max-width:44ch;margin:0 auto 28px}
+.join a.btn{display:inline-flex;align-items:center;min-height:56px;padding:0 32px;border-radius:12px;background:var(--blue);color:#fff;font-weight:700;text-decoration:none;transition:background .2s}
+.join a.btn:hover{background:#4a7fff}
+
+footer{padding:32px 0;border-top:1px solid var(--navy2);color:var(--muted);font-size:14px}
+footer .wrap{display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px}
+
+@media (max-width:560px){nav{gap:14px}nav a{font-size:14px}.hero{padding:64px 0}section{padding:56px 0}}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important;scroll-behavior:auto!important}}
+</style>
+</head>
+<body>
+<header>
+  <div class="wrap">
+    <a class="logo" href="#top">93<b>.</b>server</a>
+    <nav aria-label="Разделы">
+      <a href="#join">Как зайти</a>
+      <a href="#about">О сервере</a>
+      <a href="#rules">Правила</a>
+    </nav>
+  </div>
+</header>
+
+<main id="top">
+  <div class="hero">
+    <div class="wrap">
+      <h1 class="big">93<small>server</small></h1>
+      <p class="lead">Спокойный Minecraft-сервер для своих. Заходи, строй и играй с друзьями.</p>
+      <div class="ip">
+        <code id="ip">play.93server.ru</code>
+        <button id="copy" type="button">Скопировать IP</button>
+      </div>
+      <p class="hint">Версия: Java Edition 1.21</p>
+    </div>
+  </div>
+
+  <section id="join">
+    <div class="wrap">
+      <h2>Как зайти</h2>
+      <ol class="steps">
+        <li><div><b>Открой Minecraft Java Edition</b><span>Версия 1.21 или новее.</span></div></li>
+        <li><div><b>Нажми «Сетевая игра» → «Добавить сервер»</b><span>Название — любое, например «93».</span></div></li>
+        <li><div><b>Вставь адрес сервера</b><span>Скопируй его кнопкой выше и нажми «Готово».</span></div></li>
+      </ol>
+    </div>
+  </section>
+
+  <section id="about" class="alt">
+    <div class="wrap">
+      <h2>О сервере</h2>
+      <div class="grid">
+        <div class="card"><h3>Выживание</h3><p>Добывай ресурсы, строй базы и развивай свой город.</p></div>
+        <div class="card"><h3>Защита построек</h3><p>Приватишь территорию — и твои постройки в безопасности.</p></div>
+        <div class="card"><h3>Дружная команда</h3><p>Администраторы быстро отвечают и помогают новичкам.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <section id="rules">
+    <div class="wrap">
+      <h2>Правила</h2>
+      <ul class="rules">
+        <li><b>Уважай игроков.</b> Без оскорблений и травли.</li>
+        <li><b>Не ломай чужое.</b> Гриферство запрещено.</li>
+        <li><b>Играй честно.</b> Читы и баги — бан.</li>
+        <li><b>Не спамь в чате.</b> Реклама других серверов запрещена.</li>
+      </ul>
+    </div>
+  </section>
+
+  <section id="chat" class="alt join">
+    <div class="wrap">
+      <h2>Есть вопрос?</h2>
+      <p>Задай его в нашем сообществе — подскажем и поможем с входом.</p>
+      <a class="btn" href="#" aria-label="Открыть Discord">Написать в Discord</a>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <span>93 server</span>
+    <span>Не является продуктом Mojang или Microsoft</span>
+  </div>
+</footer>
+
+<script>
+(function(){
+  var btn=document.getElementById('copy'), ip=document.getElementById('ip');
+  btn.addEventListener('click',function(){
+    var t=ip.textContent.trim();
+    function done(){btn.textContent='Скопировано';setTimeout(function(){btn.textContent='Скопировать IP'},1800)}
+    function fallback(){
+      var r=document.createRange();r.selectNodeContents(ip);
+      var s=getSelection();s.removeAllRanges();s.addRange(r);
+      try{document.execCommand('copy');done()}catch(e){btn.textContent='Выдели и скопируй вручную'}
+    }
+    if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(t).then(done,fallback)}else{fallback()}
+  });
+})();
+</script>
+</body>
+</html>
