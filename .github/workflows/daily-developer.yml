@@ -1,0 +1,49 @@
+name: Daily AI Developer
+
+on:
+  schedule:
+    # Каждый день в 06:00 по Екатеринбургу (UTC+5)
+    - cron: "0 1 * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: daily-ai-developer
+  cancel-in-progress: false
+
+jobs:
+  daily-improvements:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+
+    steps:
+      - name: Checkout main
+        uses: actions/checkout@v4
+        with:
+          ref: main
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+
+      - name: Install dependencies
+        working-directory: frontend
+        run: |
+          if [ -f pnpm-lock.yaml ]; then
+            corepack enable
+            pnpm install --frozen-lockfile
+          elif [ -f package-lock.json ]; then
+            npm ci
+          elif [ -f yarn.lock ]; then
+            corepack enable
+            yarn install --frozen-lockfile
+          else
+            npm install
+          fi
+
+      # Здесь подключим генератор улучшений,
+      # который будет изменять код, проверять
+      # сборку и создавать от 1 до 15 коммитов.
