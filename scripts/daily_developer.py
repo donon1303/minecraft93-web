@@ -65,7 +65,7 @@ def request_patches(html: str, count: int) -> list[dict[str, str]]:
         "model": MODEL,
         "temperature": 0.7,
         "response_format": {"type": "json_object"},
-        "max_completion_tokens": 10000,
+        "max_completion_tokens": 3000,
         "messages": [
             {"role": "system", "content": system_prompt},
             {"role": "user", "content": user_prompt},
@@ -170,7 +170,7 @@ def main() -> int:
     original_script_tail = initial[original_script_start:] if original_script_start >= 0 else ""
     validate_html(initial, original_script_count, original_hrefs, original_script_tail)
 
-    count = random.SystemRandom().randint(1, 15)
+    count = 1
     print(f"Случайно выбрано коммитов: {count}")
     changes = request_patches(initial, count)
     if not changes:
